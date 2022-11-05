@@ -1,6 +1,9 @@
 require 'socket'
 require 'thread'
 require 'ruby-fcp/utils'
+require 'ruby-fcp/PacketFactory'
+require 'ruby-fcp/Packet'
+require 'ruby-fcp/Connection'
 
 class Communicator 
   attr_reader   :ConnectionIdentifier
@@ -26,7 +29,7 @@ class Communicator
  
   def connect
     @sock = TCPSocket.new @host ,@port
-    @sock.write @utils.packet_mangler({"Name" => @client,"ExpectedVersion" => @version},"ClientHello")
+    @sock.write PacketFactory::ClientHello.new(@client).compile
     response = grab_response
     unless response[:state] == -1
       @sock_thrd = Thread.new {sock_thrd}
@@ -106,6 +109,7 @@ class Communicator
 
   def grab_response
     response = { state: 1 }
+    puts "here"
     line = @sock.readline
     response[:state] = -1 if line =~ /ClosedConnectionDuplicateClientName|ProtocolError/
     response[:head] = line.chomp
@@ -121,7 +125,7 @@ class Communicator
   def keep_alive
     Thread.start do
       loop do
-       send_packet "Void\nEndMessage\n"
+       send_packet PacketFactory::Void.new().compile()
        sleep @heartbeat
        break if @state == false
       end
@@ -130,7 +134,7 @@ class Communicator
   
   # Send disconnect message and close the socket
   def close
-    @tex.synchronize{@sock.write "Disconnect EndMessage\n"}
+    @tex.synchronize{@sock.write PacketFactory::Disconnect.new().compile()}
     @sock.close
   end
   

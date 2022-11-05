@@ -3,6 +3,6 @@ require 'socket'
 require 'digest'
 require 'base64'
 
-%w[ fcp_client communicator utils ].each do |file|
+%w[ PacketFactory PacketDock fcp_client communicator utils ].each do |file|
  require "ruby-fcp/#{file}"
 end
