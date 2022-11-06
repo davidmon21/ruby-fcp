@@ -6,9 +6,14 @@ client = Client.new "HelloAClientYoBee"
 puts client.ConnectionIdentifier
 
 saveloc = '/tmp/jsite-select-project.png'
-puts client.dda_test('/tmp/')
+#puts client.dda_test('/tmp/')
 
 getPacket = PacketFactory::ClientGet.new uri, client.ConnectionIdentifier
-getPacket.ReturnType= 'disk'
-getPacket.Filename= saveloc 
-puts (client.Connection.send_recv getPacket).Raw
+getPacket.ReturnType= 'direct'
+#getPacket.Filename= saveloc 
+response = client.Connection.send_recv getPacket
+File.open("newimage.png", 'wb') do |output| 
+    response.Data.each do |byte|
+        output.print byte.chr 
+    end
+end 

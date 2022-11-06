@@ -4,12 +4,19 @@ class Packet
     @Raw = packetData
     lines = packetData.split("\n")
     @Type=lines[0]
-    @Content={}
+    @Content={} 
+    if @Type == "AllData"
+    end
     for line in lines[1..-1]
-      unless line =~ /EndMessage|^Data$/
+      if line  =~ /^Data$/
+        @Data = packetData.bytes[-(@DataLength.to_i)..-1]
+        break
+      end
+      unless line =~ /EndMessage/
         self.process_line  line
       end
     end
+
   end
   def process_line(line)
     var,value = line.split("=")
