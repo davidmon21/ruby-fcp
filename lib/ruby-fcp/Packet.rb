@@ -32,9 +32,11 @@ class Packet
     else
       var = var.strip
       @Content[var]=value
-      instance_variable_set("@#{var}", value.strip)
-      define_singleton_method(var) do 
-        instance_variable_get("@#{var}")
+      if value != nil
+        instance_variable_set("@#{var}", value.strip)
+        define_singleton_method(var) do 
+          instance_variable_get("@#{var}")
+        end
       end
     end
   end

@@ -19,7 +19,8 @@ class Connection
       @Host = host
       @Port = port
       @Socket = TCPSocket.new @Host, @Port
-      @ConnectionIdentifier = self.send_recv PacketFactory::ClientHello.new(@Client).ConnectionIdentifier
+      packet = self.send_recv PacketFactory::ClientHello.new @Client
+      @ConnectionIdentifier = packet.ConnectionIdentifier
     end
     def grab_packet
       rawResponse = @Socket.recvmsg
@@ -37,7 +38,7 @@ class Connection
       return packet
     end
     def send_recv(pack)
-      self.send pack 
+      self.send pack
       return self.recv
     end
 end
