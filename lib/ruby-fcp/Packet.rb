@@ -5,10 +5,8 @@ class Packet
     lines = packetData.split("\n")
     @Type=lines[0]
     @Content={} 
-    if @Type == "AllData"
-    end
     for line in lines[1..-1]
-      if line  =~ /^Data$/
+      if line  == "Data"
         @Data = packetData.bytes[-(@DataLength.to_i)..-1]
         break
       end
@@ -16,7 +14,6 @@ class Packet
         self.process_line  line
       end
     end
-
   end
   def process_line(line)
     var,value = line.split("=")

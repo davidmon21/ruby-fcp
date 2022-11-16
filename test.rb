@@ -7,13 +7,13 @@ puts client.ConnectionIdentifier
 
 saveloc = '/tmp/jsite-select-project.png'
 #puts client.dda_test('/tmp/')
-
-getPacket = PacketFactory::ClientGet.new uri, client.ConnectionIdentifier
-getPacket.ReturnType= 'direct'
-#getPacket.Filename= saveloc 
-response = client.Connection.send_recv getPacket
-File.open("newimage.png", 'wb') do |output| 
-    response.Data.each do |byte|
-        output.print byte.chr 
-    end
-end 
+client.simple_direct_get(uri,"newimage3.png",method(:puts))
+# getPacket = PacketFactory::ClientGet.new uri, client.ConnectionIdentifier
+# getPacket.ReturnType= 'direct'
+# #getPacket.Filename= saveloc 
+# response = client.Communicator.send_recv getPacket
+# File.open("newimage2.png", 'wb') do |output| 
+#     response.Data.each do |byte|
+#         output.print byte.chr 
+#     end
+# end 
