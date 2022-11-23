@@ -47,3 +47,8 @@ flycheck_*.el
 # network security
 /network-security.data
 *.gem
+
+# old files 
+utils.rb
+fcp_client.rb
+communicator.rb

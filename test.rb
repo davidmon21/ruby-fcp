@@ -7,7 +7,11 @@ puts client.ConnectionIdentifier
 
 saveloc = '/tmp/jsite-select-project.png'
 #puts client.dda_test('/tmp/')
-client.simple_direct_get(uri,"newimage3.png",method(:puts))
+def hook(response)
+    puts response.Raw 
+    puts response.Type 
+end
+client.simple_fs_get(uri,"/tmp/newimage.png",method(:hook))
 # getPacket = PacketFactory::ClientGet.new uri, client.ConnectionIdentifier
 # getPacket.ReturnType= 'direct'
 # #getPacket.Filename= saveloc 
